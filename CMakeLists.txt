@@ -39,6 +39,8 @@ set(GMK_SOURCES
     src/core/byte_view.cpp
     src/core/error.cpp
     src/core/logging.cpp
+    src/pattern/pattern.cpp
+    src/pattern/scanner.cpp
 )
 
 add_library(gmk STATIC ${GMK_SOURCES})

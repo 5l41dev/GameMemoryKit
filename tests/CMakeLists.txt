@@ -22,3 +22,8 @@ gmk_add_test(gmk_tests_core
     core/test_logging.cpp
     core/test_result.cpp
 )
+
+gmk_add_test(gmk_tests_pattern
+    pattern/test_pattern.cpp
+    pattern/test_scanner.cpp
+)
