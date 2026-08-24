@@ -1,6 +1,8 @@
 @echo off
 setlocal EnableExtensions
 cd /d "%~dp0"
+rem Keep the window open until the user presses a key.
+set "GMK_PAUSE=call pause"
 
 rem ============================================================
 rem  GameMemoryKit build helper (Windows)
@@ -22,6 +24,7 @@ if "%MODE%"=="" set "MODE=debug"
 if "%MODE%"=="--clean" (
     rmdir /s /q build\debug build\release build\sanitizers build\tests-only 2>nul
     echo [build.bat] removed build directories.
+    %GMK_PAUSE%
     exit /b 0
 )
 
@@ -35,6 +38,7 @@ if "%MODE%"=="tests-only" set "CMAKE_ARGS=-DCMAKE_BUILD_TYPE=Debug -DGMK_BUILD_E
 if not defined CMAKE_ARGS (
     echo [build.bat] unknown mode "%MODE%".
     echo [build.bat] valid modes: debug ^| release ^| sanitizers ^| tests-only ^| --clean
+    %GMK_PAUSE%
     exit /b 1
 )
 
@@ -61,6 +65,7 @@ if exist "C:\msys64\clang64\bin\clang++.exe" (
 where cmake >nul 2>nul
 if errorlevel 1 (
     echo [build.bat] error: CMake was not found on PATH.
+    %GMK_PAUSE%
     exit /b 1
 )
 
@@ -73,6 +78,7 @@ rem --- Configure ----------------------------------------------
 cmake -S . -B "%BUILD_DIR%" %GENERATOR% %CMAKE_ARGS% %EXTRA_ARGS%
 if errorlevel 1 (
     echo [build.bat] configure failed.
+    %GMK_PAUSE%
     exit /b 1
 )
 
@@ -80,9 +86,12 @@ rem --- Build ---------------------------------------------------
 cmake --build "%BUILD_DIR%" -j
 if errorlevel 1 (
     echo [build.bat] build failed.
+    %GMK_PAUSE%
     exit /b 1
 )
 
 rem --- Test ----------------------------------------------------
 ctest --test-dir "%BUILD_DIR%" --output-on-failure
-exit /b %errorlevel%
+set "GMK_TEST_RESULT=%errorlevel%"
+%GMK_PAUSE%
+exit /b %GMK_TEST_RESULT%
