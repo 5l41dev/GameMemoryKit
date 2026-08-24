@@ -56,7 +56,9 @@ if exist "C:\msys64\clang64\bin\clang++.exe" (
     )
 ) else if exist "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat" (
     call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat" >nul
-    echo [build.bat] toolchain: MSVC (Visual Studio 2022)
+    rem Note: avoid parentheses in echoed text here — cmd's block parser
+    rem counts parens inside parenthesized if-blocks and gets confused.
+    echo [build.bat] toolchain: MSVC - Visual Studio 2022
 ) else (
     echo [build.bat] toolchain: compiler from PATH
     where ninja >nul 2>nul && set "GENERATOR=-G Ninja"
