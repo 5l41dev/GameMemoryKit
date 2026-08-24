@@ -27,3 +27,10 @@ gmk_add_test(gmk_tests_pattern
     pattern/test_pattern.cpp
     pattern/test_scanner.cpp
 )
+
+gmk_add_test(gmk_tests_binary
+    binary/test_binary_image.cpp
+    binary/test_elf.cpp
+    binary/test_malformed.cpp
+    binary/test_pe.cpp
+)

@@ -76,6 +76,18 @@ public:
         return Address{value_ - magnitude};
     }
 
+    /// Integral overload so callers can add e.g. a uint32_t RVA without an
+    /// explicit cast (avoids the ptrdiff_t/size_t ambiguity).
+    template <typename Int, typename = std::enable_if_t<std::is_integral_v<Int>>>
+    [[nodiscard]] constexpr Address add(Int offset) const noexcept
+    {
+        if constexpr (std::is_signed_v<Int>) {
+            return add(static_cast<std::ptrdiff_t>(offset));
+        } else {
+            return add(static_cast<std::size_t>(offset));
+        }
+    }
+
     /// Returns this address plus a non-negative `offset`.
     /// Returns a null address if the result would overflow.
     [[nodiscard]] constexpr Address add(std::size_t offset) const noexcept

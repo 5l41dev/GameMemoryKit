@@ -119,7 +119,7 @@ inline bool check_err_impl(const ResultLike& result, const char* expr, const cha
     }
     std::ostringstream msg;
     msg << "CHECK_ERR failed (expected failure): " << expr << "\n";
-    if constexpr (requires { result.value(); }) {
+    if constexpr (requires { std::declval<std::ostringstream&>() << result.value(); }) {
         msg << "    value: " << result.value();
     }
     failures().push_back(Failure{file, line, msg.str()});

@@ -35,6 +35,9 @@ include(Sanitizers)
 # ---------------------------------------------------------------------------
 
 set(GMK_SOURCES
+    src/binary/binary_image.cpp
+    src/binary/elf.cpp
+    src/binary/pe.cpp
     src/core/address.cpp
     src/core/byte_view.cpp
     src/core/error.cpp
