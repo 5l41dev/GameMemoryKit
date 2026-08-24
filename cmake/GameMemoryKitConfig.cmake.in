@@ -1,0 +1,8 @@
+@PACKAGE_INIT@
+
+# GameMemoryKit has no external dependencies, so this package only needs to
+# provide the library target.
+
+include("${CMAKE_CURRENT_LIST_DIR}/GameMemoryKitTargets.cmake")
+
+check_required_components(GameMemoryKit)

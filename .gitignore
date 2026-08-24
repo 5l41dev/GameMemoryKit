@@ -1,3 +1,16 @@
+# Build directories
+build/
+build-*/
+out/
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+compile_commands.json
+CTestTestfile.cmake
+Testing/
+
 # Prerequisites
 *.d
 

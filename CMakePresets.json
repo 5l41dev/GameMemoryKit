@@ -1,0 +1,98 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": { "major": 3, "minor": 21, "patch": 0 },
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    },
+    {
+      "name": "debug",
+      "displayName": "Debug (Ninja)",
+      "inherits": "base"
+    },
+    {
+      "name": "release",
+      "displayName": "Release (Ninja)",
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "sanitizers",
+      "displayName": "Debug with ASan/UBSan",
+      "inherits": "base",
+      "cacheVariables": {
+        "GMK_ENABLE_SANITIZERS": "ON"
+      }
+    },
+    {
+      "name": "tests-only",
+      "displayName": "Debug, tests only",
+      "inherits": "base",
+      "cacheVariables": {
+        "GMK_BUILD_EXAMPLES": "OFF",
+        "GMK_BUILD_CLI": "OFF"
+      }
+    },
+    {
+      "name": "ci-msvc",
+      "displayName": "CI: MSVC (Visual Studio 17 2022)",
+      "generator": "Visual Studio 17 2022",
+      "binaryDir": "${sourceDir}/build/ci-msvc",
+      "architecture": "x64",
+      "cacheVariables": {
+        "GMK_BUILD_BENCHMARKS": "OFF"
+      }
+    },
+    {
+      "name": "ci-ubuntu-gcc",
+      "displayName": "CI: Ubuntu GCC",
+      "inherits": "base",
+      "binaryDir": "${sourceDir}/build/ci-ubuntu-gcc",
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "g++"
+      }
+    },
+    {
+      "name": "ci-ubuntu-clang",
+      "displayName": "CI: Ubuntu Clang",
+      "inherits": "base",
+      "binaryDir": "${sourceDir}/build/ci-ubuntu-clang",
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "clang++"
+      }
+    }
+  ],
+  "buildPresets": [
+    { "name": "debug", "configurePreset": "debug" },
+    { "name": "release", "configurePreset": "release" },
+    { "name": "sanitizers", "configurePreset": "sanitizers" },
+    { "name": "tests-only", "configurePreset": "tests-only" }
+  ],
+  "testPresets": [
+    {
+      "name": "debug",
+      "configurePreset": "debug",
+      "output": { "outputOnFailure": true },
+      "execution": { "noTestsAction": "error", "stopOnFailure": false }
+    },
+    {
+      "name": "release",
+      "configurePreset": "release",
+      "output": { "outputOnFailure": true }
+    },
+    {
+      "name": "sanitizers",
+      "configurePreset": "sanitizers",
+      "output": { "outputOnFailure": true }
+    }
+  ]
+}
